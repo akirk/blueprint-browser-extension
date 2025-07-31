@@ -58,8 +58,17 @@ function createPlayButton(originalUrl) {
 }
 
 function findBlueprintLinks() {
-  // Find all links that end with blueprint.json
-  const links = document.querySelectorAll('a[href$="blueprint.json"]');
+  // Find all links that end with ".json"
+  const allJsonLinks = document.querySelectorAll('a[href$=".json"]');
+  
+  // Filter to only blueprint files
+  const links = Array.from(allJsonLinks).filter(link => {
+    const href = link.href || link.getAttribute('href');
+    if (!href) return false;
+    
+    const filename = href.split('/').pop() || '';
+    return filename.includes('blueprint');
+  });
   
   links.forEach(link => {
     // Skip if already processed
