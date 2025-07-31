@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Blueprint Playground Launcher",
+  "version": "1.0.0",
+  "description": "Adds a 'Launch in Playground' button next to blueprint.json links",
+  
+  "permissions": [
+    "activeTab"
+  ],
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ],
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*.png"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "blueprint-playground@example.com"
+    }
+  }
+}
