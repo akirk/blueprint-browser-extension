@@ -14,17 +14,15 @@ function transformGitHubUrl(url) {
 }
 
 function hasNearbyPlayButton(link, targetHref) {
-  // Go up 2 DOM levels from the current link
-  let ancestor = link.parentNode?.parentNode;
-  if (!ancestor) {
-    ancestor = link.parentNode;
-  }
-  if (!ancestor) {
+  // Find the closest containing p or td element
+  const container = link.closest('p, td') || link.parentNode;
+  
+  if (!container) {
     return false;
   }
   
-  // Check all existing play buttons within this ancestor
-  const existingButtons = ancestor.querySelectorAll('.blueprint-playground-btn');
+  // Check all existing play buttons within this container
+  const existingButtons = container.querySelectorAll('.blueprint-playground-btn');
   
   for (const button of existingButtons) {
     // Get the URL this button would open
@@ -71,6 +69,12 @@ function findBlueprintLinks() {
     
     const href = link.href || link.getAttribute('href');
     if (!href) return;
+    
+    // Skip GitHub edit links - only process blob links or non-GitHub links
+    if (href.includes('github.com') && href.includes('/edit/')) {
+      link.dataset.blueprintProcessed = 'true';
+      return;
+    }
     
     // Check if there's already a button for this URL in the nearby DOM hierarchy
     if (hasNearbyPlayButton(link, href)) {
